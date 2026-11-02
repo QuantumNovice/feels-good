@@ -1,0 +1,344 @@
+/* Shared control surfaces. Reka owns focus, keyboard interaction and popup placement. */
+:root {
+  --control-surface: var(--glass-control);
+  --control-border: var(--glass-border);
+  --control-muted: #b8c2d0;
+  --control-radius: 14px;
+}
+.app-header {
+  padding: 8px 18px;
+  border-bottom-color: #242c37;
+}
+.header-controls {
+  gap: 8px;
+}
+.header-controls button {
+  min-height: 48px;
+  border-color: var(--control-border);
+  border-radius: var(--control-radius);
+  background: #171c24;
+}
+.brand-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+.brand b {
+  font-size: 23px;
+}
+.brand small {
+  color: var(--control-muted);
+  font-size: 14px;
+}
+.map-filters {
+  padding: 5px;
+  border-radius: 18px;
+  gap: 3px;
+}
+.map-filters button {
+  min-height: 54px;
+  border-radius: 13px;
+  padding: 9px 13px;
+  font-size: 17px;
+}
+.map-filters img {
+  width: 30px;
+  height: 30px;
+}
+.discovery-controls {
+  top: 96px;
+  left: 16px;
+  right: auto;
+  width: fit-content;
+  max-width: calc(100% - 100px);
+  min-height: 58px;
+  padding: 4px;
+  gap: 0;
+  pointer-events: auto;
+  border-radius: 17px;
+  border: 1px solid var(--control-border);
+}
+.region-picker {
+  padding: 0;
+  min-width: 0;
+}
+.region-anchor {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 10px;
+}
+.region-anchor > .ui-icon-host {
+  color: #cad6e8;
+}
+.region-anchor input {
+  width: 162px;
+  min-width: 0;
+  min-height: 48px;
+  padding: 8px 0;
+  font-size: 17px;
+  font-weight: 550;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  text-overflow: ellipsis;
+}
+.region-chevron {
+  width: 36px;
+  min-width: 36px;
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  padding: 8px;
+}
+.region-chevron .ui-icon {
+  width: 18px;
+  height: 18px;
+}
+.nearby-count {
+  min-height: 32px;
+  padding: 0 14px;
+  margin: 8px 0;
+  border-left: 1px solid var(--control-border);
+  border-radius: 0;
+  color: var(--control-muted);
+  font-size: 14px;
+  background: transparent;
+}
+.discovery-controls .rail-toggle,
+.discovery-controls .saved-button {
+  position: static;
+  min-width: 100px;
+  min-height: 48px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  padding: 8px 12px;
+  font-size: 16px;
+}
+.rail-toggle .ui-icon {
+  width: 22px;
+  height: 22px;
+}
+.discovery-controls .rail-toggle.is-selected {
+  background: var(--glass-highlight);
+  color: #d4e5ff;
+}
+.region-menu {
+  z-index: 2000;
+  width: 324px;
+  max-width: calc(100vw - 24px);
+  border: 1px solid #3c4655;
+  border-radius: 16px;
+  padding: 6px;
+  color: #f4f7fb;
+  box-shadow:
+    0 18px 60px #0006,
+    0 2px 8px #0003;
+}
+.region-menu-heading {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 12px 12px;
+  font-size: 13px;
+  color: var(--control-muted);
+}
+.region-menu-heading span {
+  border-radius: 6px;
+  padding: 0 6px;
+  background: #ffffff0d;
+}
+.region-options {
+  max-height: min(340px, var(--reka-combobox-content-available-height));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.region-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 56px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  outline: none;
+}
+.region-option[data-highlighted] {
+  background: #b4d2ff1f;
+  color: #e4efff;
+}
+.region-option[data-state='checked'] {
+  background: #abcaff14;
+}
+.region-option-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.region-option-copy b {
+  font-size: 16px;
+  font-weight: 550;
+}
+.region-option-copy small {
+  color: #aab7ca;
+  font-size: 12px;
+}
+.region-option .ui-icon {
+  width: 19px;
+  height: 19px;
+  color: #a8d3c8;
+}
+.region-no-results {
+  padding: 18px 12px;
+  color: var(--control-muted);
+}
+.location-search-input {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px;
+  border: 1px solid var(--control-border);
+  border-radius: var(--control-radius);
+  background: var(--control-surface);
+}
+.location-search-input input {
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  border: 0;
+  background: transparent;
+}
+.location-search-results {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+.location-search-results .nav-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+}
+.location-search-results small {
+  margin-left: auto;
+}
+.discovery-controls .nearby-count {
+  border-left: 0;
+}
+.map-tools {
+  position: absolute;
+  right: 16px;
+  bottom: 24px;
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid var(--control-border);
+  border-radius: 17px;
+}
+.map-tools button {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  border: 0;
+  background: transparent;
+  border-radius: 12px;
+}
+.map-tools button:hover {
+  background: #ffffff0f;
+}
+.map-tools .ui-icon {
+  width: 24px;
+  height: 24px;
+}
+.map-tools-divider {
+  height: 1px;
+  margin: 2px 8px;
+  background: var(--control-border);
+}
+.place-rail {
+  top: 168px;
+  bottom: auto;
+  max-height: calc(100% - 188px);
+  height: fit-content;
+  width: 348px;
+  border-radius: 18px;
+}
+.rail-heading {
+  padding: 10px 12px 10px 18px;
+}
+.rail-heading h1 {
+  font-size: 17px;
+}
+.map-empty {
+  font-size: 16px;
+  border-radius: 16px;
+  padding: 18px 24px;
+}
+@media (max-width: 760px) {
+  .app-header {
+    padding: 6px 12px;
+  }
+  .header-controls button {
+    min-height: 46px;
+  }
+  .map-filters {
+    left: 10px;
+    right: 10px;
+  }
+  .map-filters button {
+    font-size: 15px;
+    min-height: 52px;
+    padding: 8px 10px;
+  }
+  .discovery-controls {
+    top: 90px;
+    left: 10px;
+    max-width: calc(100% - 20px);
+    flex-wrap: nowrap;
+    min-height: 56px;
+  }
+  .region-anchor {
+    gap: 5px;
+    padding-left: 6px;
+  }
+  .region-anchor input {
+    width: 96px;
+    font-size: 16px;
+  }
+  .region-anchor > .ui-icon-host .ui-icon {
+    width: 21px;
+    height: 21px;
+  }
+  .region-chevron {
+    min-width: 26px;
+    width: 26px;
+    padding: 4px;
+  }
+  .nearby-count {
+    padding: 0 8px;
+    font-size: 12px;
+  }
+  .discovery-controls .rail-toggle,
+  .discovery-controls .saved-button {
+    min-width: 76px;
+    padding: 8px;
+    font-size: 14px;
+    gap: 6px;
+  }
+  .place-rail {
+    top: 160px;
+    left: 10px;
+    width: calc(100% - 88px);
+    max-height: calc(100% - 176px);
+  }
+  .map-tools {
+    right: 10px;
+    bottom: 20px;
+  }
+  .selected-card {
+    right: 78px;
+  }
+}

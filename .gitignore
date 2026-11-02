@@ -1,0 +1,38 @@
+.gradle/
+**/build/
+local.properties
+*.zip
+node_modules/
+sdk-inspect/
+sdk-data/
+emulator*.log
+spotlane*.xml
+.playwright-cli/
+data/seoul-osm-raw.json
+output/web-preview*.log
+
+output/google-java-format.jar
+output/code-context.json
+data/osm-regions/
+__pycache__/
+.kotlin/
+dist/
+output/
+test-results/
+playwright-report/
+frontend/test-results/
+frontend/playwright-report/
+app/src/main/assets/ui/
+spotlane*.png
+.env
+.env.*
+!.env.example
+*.keystore
+*.jks
+*.hprof
+.vscode/
+# Large snapshots live on the private GitHub release "archive-2026-11-02".
+data/geofabrik/
+
+# Raw screen recordings (shrunk copies go in docs/videos/)
+/Recording *.mp4

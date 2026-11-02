@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NeuJoh car</title>
+<style>
+  :root { color-scheme: dark; --bg: #0d1117; --panel: #161b22; --line: #30363d; --text: #e6edf3; --muted: #8b949e;
+    --go: #2ea043; --stop: #da3633; --amber: #d29922; --on: #388bfd; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); font: 15px/1.4 system-ui, sans-serif;
+    display: grid; place-items: center; padding: 16px; user-select: none; }
+  main { width: min(560px, 100%); display: grid; gap: 14px; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px; }
+  .readout { display: flex; justify-content: space-between; align-items: baseline; }
+  .speed { font-size: 48px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .speed small { font-size: 16px; color: var(--muted); margin-left: 4px; }
+  .source { color: var(--muted); font-size: 13px; text-align: right; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; }
+  button { flex: 1; min-height: 48px; border-radius: 10px; border: 1px solid var(--line); background: #21262d;
+    color: var(--text); font: inherit; font-weight: 600; cursor: pointer; touch-action: none; }
+  button.on { background: var(--on); border-color: var(--on); }
+  .gear button { font-size: 20px; }
+  .pedals button { min-height: 110px; font-size: 18px; }
+  .pedals .go { background: #12361c; border-color: var(--go); }
+  .pedals .stop { background: #3d1214; border-color: var(--stop); }
+  .pedals button:active, .pedals button.held { filter: brightness(1.6); }
+  .amber.on { background: var(--amber); border-color: var(--amber); color: #111; }
+  h2 { margin: 0 0 8px; font-size: 13px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+  p { margin: 0; color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+  <section class="panel readout">
+    <div class="speed" id="speed">0<small>km/h</small></div>
+    <div class="source" id="source">connecting</div>
+  </section>
+  <section class="panel">
+    <h2>Gear</h2>
+    <div class="row gear" id="gears">
+      <button data-key="p" data-gear="park">P</button><button data-key="r" data-gear="reverse">R</button>
+      <button data-key="n" data-gear="neutral">N</button><button data-key="d" data-gear="drive">D</button>
+    </div>
+  </section>
+  <section class="panel">
+    <h2>Pedals (hold)</h2>
+    <div class="row pedals">
+      <button class="stop" data-hold="s">Brake</button><button class="go" data-hold="w">Accelerate</button>
+    </div>
+  </section>
+  <section class="panel">
+    <h2>Lights</h2>
+    <div class="row">
+      <button class="amber" data-key="left" id="turn-left">Left</button><button class="amber" data-key="h" id="hazard">Hazard</button>
+      <button class="amber" data-key="right" id="turn-right">Right</button><button data-key="l" id="lights">Headlights</button>
+    </div>
+  </section>
+  <section class="panel">
+    <h2>Doors</h2>
+    <div class="row" id="doors">
+      <button data-key="1" data-door="frontLeft">Front L</button><button data-key="2" data-door="frontRight">Front R</button>
+      <button data-key="3" data-door="rearLeft">Rear L</button><button data-key="4" data-door="rearRight">Rear R</button>
+      <button data-key="5" data-door="trunk">Trunk</button>
+    </div>
+  </section>
+  <p>Keyboard works too: p r n d, w / s, arrow keys, h, l, 1 to 5.</p>
+</main>
+<script>
+  const press = (key) => fetch('/key?k=' + encodeURIComponent(key), { method: 'POST' });
+  document.querySelectorAll('[data-key]').forEach((b) => b.addEventListener('click', () => press(b.dataset.key)));
+  // Holding a pedal repeats it, like holding the key in the terminal.
+  document.querySelectorAll('[data-hold]').forEach((b) => {
+    let timer;
+    const release = () => { clearInterval(timer); b.classList.remove('held'); };
+    b.addEventListener('pointerdown', (e) => {
+      b.setPointerCapture(e.pointerId); b.classList.add('held');
+      press(b.dataset.hold); timer = setInterval(() => press(b.dataset.hold), 150);
+    });
+    b.addEventListener('pointerup', release); b.addEventListener('pointercancel', release);
+  });
+  const keys = { ArrowLeft: 'left', ArrowRight: 'right' };
+  addEventListener('keydown', (e) => press(keys[e.key] ?? e.key.toLowerCase()));
+  const events = new EventSource('/events');
+  events.onmessage = (e) => {
+    const { signals: s, source } = JSON.parse(e.data);
+    document.getElementById('speed').firstChild.textContent = Math.round(s.speedKph);
+    document.getElementById('source').textContent =
+      source === 'console' ? 'Driven by the Pleos virtual console' : 'Simulated car';
+    document.querySelectorAll('#gears button').forEach((b) => b.classList.toggle('on', b.dataset.gear === s.gear));
+    document.querySelectorAll('#doors button').forEach((b) => b.classList.toggle('on', !!s.doors[b.dataset.door]));
+    document.getElementById('turn-left').classList.toggle('on', s.turn === 'left');
+    document.getElementById('turn-right').classList.toggle('on', s.turn === 'right');
+    document.getElementById('hazard').classList.toggle('on', !!s.hazard);
+    document.getElementById('lights').classList.toggle('on', s.lowBeam);
+  };
+  events.onerror = () => (document.getElementById('source').textContent = 'bridge stopped');
+</script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+/* Fit the WebView's CSS viewport, including Android edge-to-edge display insets. */
+:root {
+  --edge-left: max(10px, env(safe-area-inset-left));
+  --edge-right: max(10px, env(safe-area-inset-right));
+  --edge-top: max(12px, env(safe-area-inset-top));
+  --edge-bottom: max(20px, env(safe-area-inset-bottom));
+}
+.map-filters {
+  top: var(--edge-top);
+  left: max(16px, env(safe-area-inset-left));
+  max-width: calc(
+    100% - max(16px, env(safe-area-inset-left)) - var(--edge-right)
+  );
+}
+.discovery-controls {
+  top: calc(var(--edge-top) + 80px);
+  left: max(16px, env(safe-area-inset-left));
+}
+.map-tools {
+  right: max(16px, env(safe-area-inset-right));
+  bottom: var(--edge-bottom);
+}
+.selected-card,
+.pin-toolbar {
+  bottom: var(--edge-bottom);
+}
+@media (max-width: 760px), (max-height: 500px) {
+  :root {
+    --touch: 44px;
+  }
+  button,
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+  .map-filters {
+    left: var(--edge-left);
+    right: var(--edge-right);
+    max-width: calc(100% - var(--edge-left) - var(--edge-right));
+  }
+  .map-filters button {
+    min-height: 46px;
+    padding: 6px 10px;
+    font-size: 14px;
+    gap: 6px;
+  }
+  .map-filters img {
+    width: 26px;
+    height: 26px;
+  }
+  .discovery-controls {
+    top: calc(var(--edge-top) + 68px);
+    left: var(--edge-left);
+    max-width: calc(100% - var(--edge-left) - var(--edge-right));
+    min-height: 52px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .discovery-controls > * {
+    flex-shrink: 0;
+  }
+  .discovery-controls button,
+  .discovery-controls .rail-toggle,
+  .discovery-controls .saved-button {
+    min-height: 44px;
+    font-size: 14px;
+    padding: 6px 8px;
+  }
+  .discovery-controls .saved-button {
+    min-width: 44px;
+    width: 44px;
+  }
+  .saved-button span:not(.ui-icon-host) {
+    display: none;
+  }
+  .map-tools {
+    right: var(--edge-right);
+  }
+  .map-tools button {
+    min-width: 44px;
+    min-height: 44px;
+    width: 44px;
+    height: 44px;
+  }
+  .map-tools .ui-icon,
+  .selected-actions .ui-icon {
+    width: 22px;
+    height: 22px;
+  }
+  .place-rail {
+    top: calc(var(--edge-top) + 132px);
+    left: var(--edge-left);
+    width: min(348px, calc(100% - var(--edge-left) - var(--edge-right) - 62px));
+    max-height: calc(100% - var(--edge-top) - 144px - var(--edge-bottom));
+  }
+  .selected-card {
+    left: var(--edge-left);
+    right: calc(var(--edge-right) + 62px);
+    width: auto;
+    transform: none;
+    padding: 10px;
+    max-height: calc(100% - var(--edge-top) - 144px - var(--edge-bottom));
+    overflow-y: auto;
+  }
+  .selected-summary {
+    grid-template-columns: minmax(0, 1fr) var(--touch);
+    gap: 6px;
+  }
+  .selected-art {
+    display: none;
+  }
+  .selected-content h2 {
+    font-size: clamp(17px, 4.5vw, 22px);
+  }
+  .selected-type {
+    font-size: 13px;
+  }
+  .selected-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 44px 44px;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .selected-actions button {
+    min-width: 0;
+    font-size: 14px;
+    padding: 6px;
+    gap: 5px;
+  }
+  .selected-actions button:not(.navigate-primary) {
+    width: 44px;
+    font-size: 0;
+    padding: 0;
+  }
+  .selected-actions button:not(.navigate-primary) span:not(.ui-icon-host) {
+    display: none;
+  }
+  dialog {
+    width: calc(100% - var(--edge-left) - var(--edge-right));
+    max-height: calc(100dvh - var(--edge-top) - var(--edge-bottom));
+    font-size: 16px;
+  }
+  .dialog-heading {
+    gap: 12px;
+    padding: 12px;
+  }
+  .dialog-heading h2 {
+    font-size: 20px;
+  }
+  .dialog-content {
+    padding: 16px;
+  }
+  .nav-option {
+    font-size: 16px;
+    padding: 12px;
+  }
+  .language-options button {
+    font-size: 15px;
+    padding: 6px;
+    min-width: 0;
+  }
+  .pin-toolbar {
+    left: var(--edge-left);
+    right: calc(var(--edge-right) + 62px);
+    padding: 10px;
+    font-size: 16px;
+    gap: 8px;
+  }
+}

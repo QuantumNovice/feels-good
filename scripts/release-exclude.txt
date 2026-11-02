@@ -1,0 +1,30 @@
+# Paths left out of the public release repository (git pathspec globs, one per line).
+# Internal notes and agent context
+agent.md
+local.md
+CONTEXT.md
+task.md
+# Local-only tooling (embedding retrieval, Neo4j/code-context exports, review recording)
+scripts/local-rag.py
+scripts/export-code-context.py
+scripts/export-place-graph.py
+scripts/record-review.mjs
+# README copied from the upstream bathroom dataset project
+data/source-readme.md
+# Raw scraped pages and the Pleos sample app stay in the private repository only
+data/*-source.*
+data/*-page.html
+data/popup-structured-*.json
+reference/**
+advertisement.md
+docs/videos/**
+# Only README.md ships in the public release
+DEVELOPING.md
+PERFORMANCE.md
+data/README.md
+docs/*.md
+scripts/package-release.py
+README.public.md
+PUBLIC_REPO.md
+scripts/export-public.mjs
+docs/validation/**

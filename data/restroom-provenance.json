@@ -1,0 +1,17 @@
+{
+  "region": "Seoul",
+  "tz": "Asia/Seoul",
+  "source": "Korea Ministry of the Interior and Safety, 'Public Restroom Information' (data.go.kr dataset 15012892, file.localdata.go.kr, downloaded 2026-10-09) for details; Seoul Metropolitan Government, 'Seoul public restroom locations' (data.seoul.go.kr OA-22586, downloaded 2026-10-15) for coordinates",
+  "license": "National file: Korea public data, no restrictions on use. Seoul file: Korea Open Government License (KOGL) Type 1, attribution required, commercial use and changes allowed. Source: Seoul Metropolitan Government.",
+  "downloaded": "2026-10-09 / 2026-10-15",
+  "nationalRowsInSeoul": 5609,
+  "nationalLocated": 3610,
+  "nationalLocatedBy": {
+    "road": 3159,
+    "parcel": 451
+  },
+  "nationalUnmatched": 1999,
+  "seoulRows": 4455,
+  "seoulOnlyAdded": 1881,
+  "withCoordinates": 5491
+}

@@ -1,0 +1,15 @@
+{
+  "name": "neu-joh",
+  "private": true,
+  "packageManager": "pnpm@10.5.2",
+  "scripts": {
+    "postinstall": "pnpm --dir frontend install --frozen-lockfile",
+    "bootstrap": "node scripts/setup.mjs",
+    "ui": "node scripts/ui.mjs",
+    "car": "node scripts/car-bridge.mjs",
+    "device": "node scripts/android.mjs --device",
+    "build": "node scripts/build.mjs build",
+    "test": "node scripts/build.mjs test",
+    "dist": "node scripts/build.mjs dist"
+  }
+}

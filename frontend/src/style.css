@@ -1,0 +1,850 @@
+@import 'leaflet/dist/leaflet.css';
+@import '@dpawlikowski/liquid-glass/css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --touch: 56px;
+  --glass-surface: rgb(17 23 32 / 0.76);
+  --glass-control: rgb(213 229 255 / 0.07);
+  --glass-border: rgb(218 234 255 / 0.22);
+  --glass-highlight: rgb(255 255 255 / 0.12);
+  --glass-shadow: 0 12px 36px #07101c30, inset 0 1px 0 #ffffff14;
+}
+@layer base {
+  body {
+    @apply bg-ink text-white m-0 font-sans;
+    overflow: hidden;
+  }
+  button,
+  select,
+  input,
+  textarea {
+    @apply rounded-xl;
+    font: inherit;
+    font-size: 18px;
+  }
+  button,
+  select,
+  input {
+    min-height: var(--touch);
+  }
+  button {
+    @apply text-white border border-white/20;
+    min-width: var(--touch);
+    background: var(--glass-control);
+    border-color: var(--glass-border);
+    box-shadow: inset 0 1px 0 #ffffff0a;
+    padding: 10px 16px;
+    touch-action: manipulation;
+  }
+  button:disabled {
+    opacity: 0.45;
+  }
+  button:hover:not(:disabled) {
+    border-color: #adb7c7;
+  }
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 3px solid #a8ccff;
+    outline-offset: 3px;
+  }
+  input,
+  textarea,
+  select {
+    background: rgb(8 15 25 / 0.32);
+    color: #f5f7fb;
+    border: 1px solid var(--glass-border);
+    padding: 12px;
+  }
+  select {
+    color-scheme: dark;
+    appearance: auto;
+  }
+  option,
+  optgroup {
+    background: #1a1d23;
+    color: #f5f7fb;
+  }
+  option:checked {
+    background: #334155;
+    color: #ffffff;
+  }
+  textarea {
+    min-height: 120px;
+  }
+  a {
+    @apply text-accent underline;
+  }
+}
+.ui-icon {
+  display: block;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+}
+.has-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.icon-only {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--touch);
+  min-width: var(--touch);
+  padding: 0;
+}
+.active {
+  background: linear-gradient(145deg, #ffffffeb, #dbe7f5d9) !important;
+  color: #101319 !important;
+  border-color: #ffffffb3 !important;
+  box-shadow:
+    inset 0 1px 0 #fff9,
+    0 2px 8px #0002;
+}
+/* The library supplies the static optical surface; this theme keeps text on a dark backing.
+   No SVG distortion, pulse animation, background copy, or runtime JS is enabled. */
+.liquid-glass {
+  --lg-tint: 14 17 22;
+  --lg-opacity: 0.16;
+  --lg-blur: 18px;
+  --lg-radius: 18px;
+  --lg-border-opacity: 0.24;
+  --lg-edge-red: rgb(172 194 224 / 0.12);
+  --lg-edge-cyan: rgb(172 194 224 / 0.12);
+  --lg-shadow: var(--glass-shadow);
+}
+.liquid-glass.liquid-glass--static,
+.region-menu,
+.leaflet-tooltip,
+.map-widget {
+  background:
+    linear-gradient(145deg, #ffffff0a, #ffffff00 60%), var(--glass-surface);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  backdrop-filter: blur(18px) saturate(130%);
+}
+.app-header {
+  height: var(--header-height);
+  padding: 4px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #0e1014;
+  border-bottom: 1px solid #3a424e;
+}
+.brand {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 22px;
+  font-weight: 650;
+  letter-spacing: -0.5px;
+}
+.header-controls {
+  display: flex;
+  gap: 12px;
+  margin-left: auto;
+}
+.saved-button {
+  padding: 8px 16px;
+}
+.map-shell {
+  position: fixed;
+  inset: 0;
+  isolation: isolate;
+}
+#map {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #171b22;
+}
+.leaflet-container {
+  font-family: inherit;
+}
+.map-filters {
+  position: absolute;
+  z-index: 500;
+  left: 16px;
+  top: 16px;
+  right: 16px;
+  width: fit-content;
+  max-width: calc(100% - 32px);
+  padding: 6px;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.map-filters button {
+  flex-shrink: 0;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: transparent;
+  border-color: transparent;
+  font-size: 18px;
+}
+.map-filters img {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+}
+.discovery-controls {
+  position: absolute;
+  z-index: 450;
+  top: 104px;
+  left: 16px;
+  right: 170px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  pointer-events: none;
+}
+.discovery-controls > * {
+  pointer-events: auto;
+}
+.region-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px 4px 12px;
+}
+.region-picker .ui-icon {
+  width: 24px;
+  height: 24px;
+}
+.region-picker select {
+  min-width: 130px;
+  max-width: 190px;
+  min-height: 48px;
+  padding: 10px 12px;
+  background: #1a1d23;
+  color: #f5f7fb;
+  border-color: #5c6676;
+  font-size: 18px;
+}
+.nearby-count {
+  display: flex;
+  min-height: var(--touch);
+  align-items: center;
+  padding: 12px 16px;
+  font-size: 18px;
+  color: #f0f3f9;
+  white-space: nowrap;
+}
+.discovery-controls button {
+  white-space: nowrap;
+}
+.rail-toggle {
+  position: absolute;
+  z-index: 500;
+  top: 104px;
+  right: 16px;
+  min-width: 138px;
+}
+.location-button {
+  position: absolute;
+  z-index: 500;
+  right: 16px;
+  bottom: 154px;
+  background: #14181f;
+}
+.leaflet-control-zoom {
+  margin-right: 16px !important;
+  margin-bottom: 20px !important;
+}
+.leaflet-bar {
+  border: 1px solid #697282 !important;
+  border-radius: 14px !important;
+  overflow: hidden;
+}
+.leaflet-bar a {
+  width: var(--touch) !important;
+  height: var(--touch) !important;
+  line-height: var(--touch) !important;
+  font-size: 30px !important;
+  background: #14181f !important;
+  color: #f5f7fb !important;
+  border-color: #697282 !important;
+}
+.leaflet-control-attribution {
+  background: var(--glass-surface) !important;
+  backdrop-filter: blur(18px);
+  color: #c4ccd9;
+  font-size: 10px !important;
+}
+.leaflet-control-attribution a {
+  color: #e5e9f0;
+}
+.leaflet-tooltip {
+  background: var(--glass-surface);
+  color: #f5f7fb;
+  border-color: #697282;
+  font-size: 18px;
+}
+.map-widget {
+  width: 52px;
+  height: 58px;
+  margin: 4px;
+  padding: 5px;
+  background: var(--glass-surface);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px 16px 16px 5px;
+  box-shadow: 0 3px 12px #0004;
+}
+.map-widget img {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.picture-marker {
+  border: 0;
+  background: transparent;
+}
+.picture-marker:focus-visible {
+  outline: 3px solid white;
+  outline-offset: 3px;
+}
+.map-empty {
+  position: absolute;
+  z-index: 440;
+  top: 45%;
+  left: 20px;
+  right: 96px;
+  width: fit-content;
+  max-width: 520px;
+  margin: auto;
+  padding: 24px;
+  border: 1px solid #697282;
+  border-radius: 20px;
+  text-align: center;
+  background: #14181f;
+  font-size: 20px;
+}
+.map-empty p {
+  margin-bottom: 16px;
+}
+.place-rail {
+  position: absolute;
+  z-index: 550;
+  top: 180px;
+  bottom: 20px;
+  left: 16px;
+  width: min(380px, calc(100% - 112px));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.rail-heading {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid #77839655;
+}
+.rail-heading h1 {
+  font-size: 20px;
+  font-weight: 600;
+  flex: 1;
+  padding-left: 6px;
+}
+.place-list {
+  overflow: auto;
+  flex: 1;
+  min-height: 0;
+  padding: 10px;
+  scrollbar-width: thin;
+}
+.place-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 84px;
+  padding: 12px 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  text-align: left;
+}
+.place-row + .place-row {
+  border-top-color: #ffffff18;
+}
+.place-row img {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.place-row > span:first-of-type {
+  font-size: 20px;
+  line-height: 1.3;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.place-row > .place-row-copy {
+  display: block;
+  min-width: 0;
+  flex: 1;
+}
+.place-row-copy b,
+.place-row-copy small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.place-row-copy b {
+  font-weight: 500;
+}
+.place-row-copy small {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #c2c9d2;
+}
+.place-row.selected {
+  background: #ffffff18;
+}
+.row-arrow {
+  margin-left: auto;
+}
+.row-arrow .ui-icon {
+  width: 22px;
+  height: 22px;
+}
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  gap: 8px;
+  border-top: 1px solid #77839655;
+  font-size: 18px;
+}
+.selected-card {
+  position: absolute;
+  z-index: 550;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(720px, calc(100% - 180px));
+  padding: 16px;
+}
+.selected-summary {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) var(--touch);
+  gap: 14px;
+  align-items: center;
+}
+.selected-art {
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  object-fit: cover;
+}
+.selected-content {
+  min-width: 0;
+}
+.selected-type {
+  font-size: 16px;
+  color: #c4ccd9;
+  margin-bottom: 4px;
+}
+.selected-content h2 {
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.2;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.dismiss-place {
+  background: var(--glass-control);
+  align-self: start;
+}
+.selected-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+}
+.selected-actions button {
+  font-size: 20px;
+  padding: 10px 16px;
+}
+.navigate-primary {
+  flex: 1;
+  font-weight: 650;
+}
+.event-schedule {
+  font-size: 18px;
+  line-height: 1.4;
+  margin: 8px 0 0;
+}
+.event-schedule strong {
+  font-size: 16px;
+  color: #d8deea;
+  font-weight: 500;
+}
+.event-schedule p {
+  margin: 2px 0 6px;
+}
+.event-schedule a {
+  display: inline-flex;
+  min-height: var(--touch);
+  align-items: center;
+}
+.pin-toolbar {
+  position: absolute;
+  z-index: 650;
+  left: 16px;
+  right: 96px;
+  bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  background: #14181f;
+  padding: 16px;
+  border: 1px solid #697282;
+  border-radius: 20px;
+  font-size: 20px;
+}
+.empty-state {
+  padding: 16px;
+  font-size: 18px;
+  color: #d8deea;
+}
+dialog {
+  padding: 0;
+  width: min(900px, calc(100% - 40px));
+  max-width: none;
+  max-height: calc(100dvh - 40px);
+  background: #14181f;
+  color: #f5f7fb;
+  border: 1px solid #697282;
+  border-radius: 20px;
+  overflow-y: auto;
+  font-size: 20px;
+}
+dialog.liquid-glass {
+  position: fixed;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+dialog::backdrop {
+  background: #050b1666;
+}
+.dialog-heading {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px;
+  background: rgb(17 23 32 / 0.86);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--glass-border);
+}
+.dialog-heading h2 {
+  font-size: 26px;
+  font-weight: 600;
+}
+.dialog-content {
+  padding: 20px;
+}
+.nav-option {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: var(--touch);
+  padding: 16px;
+  text-align: left;
+  margin: 12px 0 0;
+  text-decoration: none;
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  background: var(--glass-control);
+  color: #f5f7fb;
+  font-size: 20px;
+}
+.language-settings h3 {
+  margin-bottom: 14px;
+  font-size: 20px;
+}
+.language-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+summary {
+  min-height: var(--touch);
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  cursor: pointer;
+}
+@supports not (
+  (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+) {
+  .liquid-glass.liquid-glass--static,
+  .region-menu,
+  .leaflet-tooltip,
+  .map-widget {
+    background: #14181f !important;
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .liquid-glass.liquid-glass--static,
+  .region-menu,
+  .leaflet-tooltip,
+  .map-widget,
+  .dialog-heading {
+    background: #14181f !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+@media (max-width: 760px) {
+  :root {
+    --touch: 52px;
+  }
+  .app-header {
+    padding: 4px 12px;
+  }
+  .brand {
+    font-size: 20px;
+  }
+  .saved-button {
+    width: var(--touch);
+    padding: 0;
+  }
+  .saved-button span:not(.ui-icon-host) {
+    display: none;
+  }
+  .header-controls {
+    gap: 8px;
+  }
+  .map-filters {
+    top: 12px;
+    left: 10px;
+    right: 10px;
+    max-width: calc(100% - 20px);
+  }
+  .map-filters button {
+    min-height: 56px;
+    font-size: 16px;
+    padding: 8px 10px;
+  }
+  .map-filters img {
+    width: 28px;
+    height: 28px;
+  }
+  .discovery-controls {
+    top: 96px;
+    left: 10px;
+    right: 10px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .region-picker {
+    gap: 4px;
+    padding-left: 8px;
+  }
+  .region-picker select {
+    min-width: 110px;
+    max-width: 150px;
+    font-size: 18px;
+  }
+  .nearby-count {
+    font-size: 16px;
+    padding: 10px;
+  }
+  .rail-toggle {
+    top: 170px;
+    left: 10px;
+    right: auto;
+    min-width: 110px;
+  }
+  .place-rail {
+    top: 232px;
+    bottom: 16px;
+    left: 10px;
+    width: calc(100% - 96px);
+  }
+  .selected-card {
+    left: 10px;
+    right: 76px;
+    transform: none;
+    width: auto;
+    bottom: 16px;
+    padding: 12px;
+  }
+  .selected-summary {
+    grid-template-columns: minmax(0, 1fr) var(--touch);
+    gap: 8px;
+  }
+  .selected-art {
+    display: none;
+  }
+  .selected-content h2 {
+    font-size: 22px;
+  }
+  .selected-type {
+    font-size: 16px;
+  }
+  .selected-actions {
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .selected-actions button {
+    font-size: 18px;
+    padding: 8px 10px;
+  }
+  .selected-actions button:not(.navigate-primary) {
+    font-size: 0;
+    padding: 0;
+    width: var(--touch);
+  }
+  .selected-actions button:not(.navigate-primary) span:not(.ui-icon-host) {
+    display: none;
+  }
+  .event-schedule {
+    font-size: 16px;
+  }
+  .event-schedule strong {
+    font-size: 16px;
+  }
+  .location-button {
+    right: 10px;
+    bottom: 144px;
+  }
+  .leaflet-control-zoom {
+    margin-right: 10px !important;
+  }
+  .language-options {
+    gap: 8px;
+  }
+  .language-options button {
+    font-size: 18px;
+    padding: 8px;
+  }
+  .map-empty {
+    top: 40%;
+    left: 10px;
+    right: 76px;
+    font-size: 18px;
+    padding: 16px;
+  }
+}
+
+.brand-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+}
+.brand > span {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+}
+.brand b {
+  font-weight: 650;
+  font-size: 23px;
+}
+.brand small {
+  font-size: 17px;
+  color: #ced7e7;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.cache-status {
+  border: 1px solid var(--glass-border);
+  background: var(--glass-control);
+  padding: 14px;
+  margin: 12px 0;
+  border-radius: 12px;
+}
+.menu-brand {
+  padding: 0 0 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--glass-border);
+}
+.app-toast {
+  position: fixed;
+  z-index: 2000;
+  bottom: 20px;
+  left: 20px;
+  right: 88px;
+  width: fit-content;
+  margin: auto;
+  padding: 16px 20px;
+  border-radius: 16px;
+  color: #f5f7fb;
+}
+/* Out of Park the app stays fully readable. A clear shield takes taps, controls fade to show they are resting,
+   and a small reminder under the category bar nudges once per tap instead of covering the map or the place card. */
+.driving-lock {
+  position: fixed;
+  z-index: 3000;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: max(96px, calc(env(safe-area-inset-top) + 84px)) 16px 16px;
+}
+.driving-lock p {
+  max-width: 520px;
+  margin: 0;
+  padding: 10px 18px;
+  border-radius: 999px;
+  color: #f5f7fb;
+  font-size: 1rem;
+  text-align: center;
+  animation: driving-nudge 0.5s ease-out;
+}
+@keyframes driving-nudge {
+  from {
+    transform: scale(0.96);
+    opacity: 0.6;
+  }
+  40% {
+    transform: scale(1.04);
+  }
+}
+html.vehicle-driving :is(.map-filters, .map-tools, .discovery-controls, dialog button, dialog input, dialog textarea) {
+  opacity: 0.55;
+  filter: saturate(0.6);
+  transition:
+    opacity 0.6s,
+    filter 0.6s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .driving-lock p {
+    animation: none;
+  }
+}
+@media (max-width: 430px) {
+  .brand small {
+    display: none;
+  }
+}
